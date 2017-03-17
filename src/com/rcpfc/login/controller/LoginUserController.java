@@ -29,33 +29,42 @@ public class LoginUserController extends BaseController {
 	
 	@RequestMapping(value = "/rest/login", method = RequestMethod.POST)
 	public @ResponseBody LoginResponseVO getEmployee(@RequestBody LoginRequestVO loginRequest) {
-		List<LoginUserVO> userList = null;
 		LoginUserVO userVO = null;
 		LoginResponseVO responseVO = new LoginResponseVO();
 		String mobileNumber = loginRequest.getMobileNumber();
+		String password = loginRequest.getPassword();
 		
 		logger.info("Login request received for username : "+mobileNumber);
 		
 		userVO = loginusermanager.getUserByMobileNumber(mobileNumber);
 			
 			if(userVO != null){
-				responseVO.setStatus("Success");
-				responseVO.setCode(200);
-				responseVO.setUsername(userVO.getUsername());
-				responseVO.setMobileNumber(userVO.getMobileNumber());
 				
-				logger.info("Login request completed. Result : Success");
+				if(userVO.getPassword().equals(password)){
+					responseVO.setStatus("SUCCESS");
+					responseVO.setCode(200);
+					responseVO.setUsername(userVO.getUsername());
+					responseVO.setMobileNumber(userVO.getMobileNumber());
+					
+					logger.info("Login request completed. Result : SUCCESS");
+				}
+				
+				else{
+					responseVO.setStatus("WRONG_PASSWORD");
+					responseVO.setCode(201);
+					logger.info("Login request completed. Result : WRONG_PASSWORD");
+				}
+
 			}
 			
 			else{
-				responseVO.setStatus("User doesn't exist");
-				responseVO.setCode(201);
+				responseVO.setStatus("INVALID_USER");
+				responseVO.setCode(202);
 				
-				logger.info("Login request completed. Result : User dosen't exist");
+				logger.info("Login request completed. Result : INVALID_USER");
 			}
 			
 		return responseVO;
 	}
 
-	
 }
