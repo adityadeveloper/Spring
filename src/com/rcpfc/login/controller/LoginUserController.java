@@ -5,6 +5,7 @@ import com.rcpfc.base.BaseController;
 import com.rcpfc.login.model.LoginRequestVO;
 import com.rcpfc.login.model.LoginResponseVO;
 import com.rcpfc.login.model.LoginUserVO;
+import org.apache.commons.io.IOUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,43 +31,52 @@ public class LoginUserController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(LoginUserController.class);
 	
 	@RequestMapping(value = "/rest/login", method = RequestMethod.POST)
-	public @ResponseBody LoginResponseVO getEmployee(@RequestBody LoginRequestVO loginRequest) {
-		LoginUserVO userVO = null;
-		LoginResponseVO responseVO = new LoginResponseVO();
-		String mobileNumber = loginRequest.getMobileNumber();
-		String password = loginRequest.getPassword();
-		
-		logger.info("Login request received for username : "+mobileNumber);
-		
-		userVO = loginusermanager.getUserByMobileNumber(mobileNumber);
+	public @ResponseBody LoginResponseVO getEmployee(@RequestBody LoginRequestVO loginRequest, HttpServletRequest request) {
+		try{
+			String inputRequest = IOUtils.toString(request.getInputStream());
+			logger.info(inputRequest);
+			LoginUserVO userVO = null;
+			LoginResponseVO responseVO = new LoginResponseVO();
+	/*		String mobileNumber = loginRequest.getMobileNumber();
+			String password = loginRequest.getPassword();
 			
-			if(userVO != null){
+			logger.info("Login request received for username : "+mobileNumber);
+			
+			userVO = loginusermanager.getUserByMobileNumber(mobileNumber);
 				
-				if(userVO.getPassword().equals(password)){
-					responseVO.setStatus("SUCCESS");
-					responseVO.setCode(200);
-					responseVO.setUsername(userVO.getUsername());
-					responseVO.setMobileNumber(userVO.getMobileNumber());
+				if(userVO != null){
 					
-					logger.info("Login request completed. Result : SUCCESS");
+					if(userVO.getPassword().equals(password)){
+						responseVO.setStatus("SUCCESS");
+						responseVO.setCode(200);
+						responseVO.setUsername(userVO.getUsername());
+						responseVO.setMobileNumber(userVO.getMobileNumber());
+						
+						logger.info("Login request completed. Result : SUCCESS");
+					}
+					
+					else{
+						responseVO.setStatus("WRONG_PASSWORD");
+						responseVO.setCode(201);
+						logger.info("Login request completed. Result : WRONG_PASSWORD");
+					}
+	
 				}
 				
 				else{
-					responseVO.setStatus("WRONG_PASSWORD");
-					responseVO.setCode(201);
-					logger.info("Login request completed. Result : WRONG_PASSWORD");
+					responseVO.setStatus("INVALID_USER");
+					responseVO.setCode(202);
+					
+					logger.info("Login request completed. Result : INVALID_USER");
 				}
-
-			}
-			
-			else{
-				responseVO.setStatus("INVALID_USER");
-				responseVO.setCode(202);
-				
-				logger.info("Login request completed. Result : INVALID_USER");
-			}
-			
-		return responseVO;
+				*/
+			return responseVO;
+		}
+		
+		catch(Exception e){
+			logger.error("Exception occured", e);
+			return null;
+		}
 	}
 
 }

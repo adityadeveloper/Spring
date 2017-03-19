@@ -1,4 +1,4 @@
-package com.rcpfc.test.controller;
+package com.rcpfc.test;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
