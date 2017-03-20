@@ -1,10 +1,14 @@
 package com.rcpfc.login.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.rcpfc.base.BaseController;
 
 import com.rcpfc.login.model.LoginRequestVO;
 import com.rcpfc.login.model.LoginResponseVO;
 import com.rcpfc.login.model.LoginUserVO;
+import com.rcpfc.utility.UtilityFunctions;
+
 import org.apache.commons.io.IOUtils;
 
 import java.util.ArrayList;
@@ -31,24 +35,31 @@ public class LoginUserController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(LoginUserController.class);
 	
 	@RequestMapping(value = "/rest/login", method = RequestMethod.POST)
-	public @ResponseBody LoginResponseVO getEmployee(@RequestBody LoginRequestVO loginRequest, HttpServletRequest request) {
+	public @ResponseBody LoginResponseVO getEmployee(HttpServletRequest request) {
+		LoginUserVO userVO = null;
+		LoginRequestVO requestVO = null;
+		LoginResponseVO responseVO = new LoginResponseVO();
+		
 		try{
 			String inputRequest = IOUtils.toString(request.getInputStream());
-			logger.info(inputRequest);
-			LoginUserVO userVO = null;
-			LoginResponseVO responseVO = new LoginResponseVO();
-	/*		String mobileNumber = loginRequest.getMobileNumber();
-			String password = loginRequest.getPassword();
+			
+			ObjectMapper objectMapper = new ObjectMapper();
+			requestVO = objectMapper.readValue(inputRequest, LoginRequestVO.class);
+			
+			String mobileNumber = requestVO.getMobileNumber();
+			String password = requestVO.getPassword();
+			
+			logger.info("Mobile Number : "+mobileNumber);
+			logger.info("Password : "+password);
 			
 			logger.info("Login request received for username : "+mobileNumber);
 			
 			userVO = loginusermanager.getUserByMobileNumber(mobileNumber);
 				
 				if(userVO != null){
-					
 					if(userVO.getPassword().equals(password)){
 						responseVO.setStatus("SUCCESS");
-						responseVO.setCode(200);
+						responseVO.setCode("200");
 						responseVO.setUsername(userVO.getUsername());
 						responseVO.setMobileNumber(userVO.getMobileNumber());
 						
@@ -57,7 +68,7 @@ public class LoginUserController extends BaseController {
 					
 					else{
 						responseVO.setStatus("WRONG_PASSWORD");
-						responseVO.setCode(201);
+						responseVO.setCode("201");
 						logger.info("Login request completed. Result : WRONG_PASSWORD");
 					}
 	
@@ -65,11 +76,18 @@ public class LoginUserController extends BaseController {
 				
 				else{
 					responseVO.setStatus("INVALID_USER");
-					responseVO.setCode(202);
+					responseVO.setCode("202");
 					
 					logger.info("Login request completed. Result : INVALID_USER");
 				}
-				*/
+				
+			return responseVO;
+		}
+		
+		catch(UnrecognizedPropertyException upex){
+			logger.error("Exception occured while parsing the JSON request");
+			responseVO.setCode("500");
+			responseVO.setStatus("Passed JSON request in invalid");
 			return responseVO;
 		}
 		
