@@ -13,8 +13,6 @@ public class LoginResponseVO implements Serializable{
 	private String status;
 	private String username;
 	private String mobileNumber;
-
-	
 	
 	public String getMobileNumber() {
 		return mobileNumber;

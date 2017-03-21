@@ -80,6 +80,10 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<mvc:interceptors>
+ 	 <bean class="com.rcpfc.interceptor.RequestPrePostInterceptor"></bean>
+	</mvc:interceptors> 
+
 </beans>
 
  
