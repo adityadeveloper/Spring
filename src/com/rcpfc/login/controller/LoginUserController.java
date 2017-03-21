@@ -36,6 +36,7 @@ public class LoginUserController extends BaseController {
 	
 	@RequestMapping(value = "/rest/login", method = RequestMethod.POST)
 	public @ResponseBody LoginResponseVO getEmployee(HttpServletRequest request) {
+		logger.info("Request URI : "+request.getRequestURI());
 		LoginUserVO userVO = null;
 		LoginRequestVO requestVO = null;
 		LoginResponseVO responseVO = new LoginResponseVO();
@@ -93,7 +94,9 @@ public class LoginUserController extends BaseController {
 		
 		catch(Exception e){
 			logger.error("Exception occured", e);
-			return null;
+			responseVO.setCode("501");
+			responseVO.setStatus("Internal server error");
+			return responseVO;
 		}
 	}
 
