@@ -9,7 +9,7 @@ public class LoginResponseVO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	private int code;
+	private String code;
 	private String status;
 	private String username;
 	private String mobileNumber;
@@ -28,10 +28,10 @@ public class LoginResponseVO implements Serializable{
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public int getCode() {
+	public String getCode() {
 		return code;
 	}
-	public void setCode(int code) {
+	public void setCode(String code) {
 		this.code = code;
 	}
 	public String getStatus() {
