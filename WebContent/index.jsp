@@ -7,9 +7,9 @@
 <title>Intro</title>
 </head>
 <body>
-	<font size="2px" face="verdana">
+	<h2><font size="2px" face="verdana">
   Welcome...
    <a href="WelcomePage.html"><br> Click here to visit welcome page :-)</a>
-</font>
+</font></h2>
 </body>
 </html>

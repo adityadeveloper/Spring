@@ -4,9 +4,9 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<title>SpringMVC</title>
+		<title>RCPFC</title>
 	</head>
 	<body>
-		<font face="verdana" size="2">${welcomeMessage}</font>
+		<h2><font face="verdana" size="2">${welcomeMessage}</font></h2>
 	</body>
 </html>

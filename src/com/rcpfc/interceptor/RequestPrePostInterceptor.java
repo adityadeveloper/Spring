@@ -21,6 +21,7 @@ public class RequestPrePostInterceptor extends HandlerInterceptorAdapter{
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception{
 		logger.info("In Interceptor's postHandle Method");
+		if (modelAndView == null) logger.info("Model & view is null");
 		super.postHandle(request, response, handler, modelAndView);
 	}
 	

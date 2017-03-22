@@ -16,7 +16,7 @@ public class TestController {
 	public ModelAndView helloWorld() {
 	
 	   logger.info("Inside TestController");
-	   String message =  "Welcome to test page of Spring MVC Project";
+	   String message =  "Welcome to RCPFC !!!";
 	 
 	   return new ModelAndView("welcome", "welcomeMessage", message);
 	}
