@@ -29,7 +29,7 @@
      </bean>
 	
 	
-	<bean id="jsonmapping" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+<!-- 	<bean id="jsonmapping" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
 		<property name="messageConverters">
 			<list>
 				<ref bean="jsonMessageConverter"/>
@@ -39,7 +39,7 @@
 	
 	
 	<bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-	</bean>
+	</bean> -->
 	
 	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
@@ -84,6 +84,35 @@
  	 <bean class="com.rcpfc.interceptor.RequestPrePostInterceptor"></bean>
 	</mvc:interceptors> 
 
+
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="order" value="1"/>
+		<property name="contentNegotiationManager" ref="contentNegotiatingManager"/>
+
+		<property name="defaultViews">
+			<list>
+				<ref bean="jacksonJsonView"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="contentNegotiatingManager" class="org.springframework.web.accept.ContentNegotiationManager">
+		<constructor-arg>
+			<bean class="org.springframework.web.accept.PathExtensionContentNegotiationStrategy">
+				<constructor-arg>
+					<map>
+						<entry key="html" value="text/html"/>
+						<entry key="json" value="application/json"/>
+					</map>
+				</constructor-arg>
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="jacksonJsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
+		<property name="extractValueFromSingleKeyModel" value="true"/>
+	</bean>
+	
 </beans>
 
  

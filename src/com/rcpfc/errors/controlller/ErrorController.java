@@ -18,7 +18,7 @@ public class ErrorController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(ErrorController.class);
 	
 	@RequestMapping(value = "/errors", method = RequestMethod.GET)
-    public @ResponseBody ErrorResponseVO renderErrorPage(HttpServletRequest httpRequest) {
+    public ErrorResponseVO renderErrorPage(HttpServletRequest httpRequest) {
 		
         //ModelAndView errorPage = new ModelAndView("errorPage");
 		ErrorResponseVO errorResponse = new ErrorResponseVO();
@@ -35,7 +35,11 @@ public class ErrorController extends BaseController {
                 break;
             }
             case 404: {
-                errorMsg = "Resource not found";
+                errorMsg = "Resource Not Found";
+                break;
+            }
+            case 405: {
+                errorMsg = "Method Not Allowed";
                 break;
             }
             case 500: {

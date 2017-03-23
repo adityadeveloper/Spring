@@ -25,6 +25,6 @@
     <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
   </listener>
   <error-page>
-    <location>/errors</location>
+    <location>/errors.json</location>
   </error-page>
 </web-app>

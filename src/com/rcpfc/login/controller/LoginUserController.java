@@ -7,6 +7,7 @@ import com.rcpfc.base.BaseController;
 import com.rcpfc.login.model.LoginRequestVO;
 import com.rcpfc.login.model.LoginResponseVO;
 import com.rcpfc.login.model.LoginUserVO;
+import com.rcpfc.response.ResponseVO;
 import com.rcpfc.utility.UtilityFunctions;
 
 import org.apache.commons.io.IOUtils;
@@ -35,20 +36,21 @@ public class LoginUserController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(LoginUserController.class);
 	
 	@RequestMapping(value = "/rest/login", method = RequestMethod.POST)
-	public @ResponseBody LoginResponseVO getEmployee(HttpServletRequest request) {
-		logger.info("Request URI : "+request.getRequestURI());
+	public ResponseVO getEmployee(HttpServletRequest request) {
+		
 		LoginUserVO userVO = null;
-		LoginRequestVO requestVO = null;
-		LoginResponseVO responseVO = new LoginResponseVO();
+		LoginRequestVO loginRequestVO = null;
+		LoginResponseVO loginResponseVO = null;
+		ResponseVO responseVO = new ResponseVO();
 		
 		try{
 			String inputRequest = IOUtils.toString(request.getInputStream());
 			
 			ObjectMapper objectMapper = new ObjectMapper();
-			requestVO = objectMapper.readValue(inputRequest, LoginRequestVO.class);
+			loginRequestVO = objectMapper.readValue(inputRequest, LoginRequestVO.class);
 			
-			String mobileNumber = requestVO.getMobileNumber();
-			String password = requestVO.getPassword();
+			String mobileNumber = loginRequestVO.getMobileNumber();
+			String password = loginRequestVO.getPassword();
 			
 			logger.info("Mobile Number : "+mobileNumber);
 			logger.info("Password : "+password);
@@ -59,10 +61,13 @@ public class LoginUserController extends BaseController {
 				
 				if(userVO != null){
 					if(userVO.getPassword().equals(password)){
+						loginResponseVO = new LoginResponseVO();	
+						loginResponseVO.setUsername(userVO.getUsername());
+						loginResponseVO.setMobileNumber(userVO.getMobileNumber());
+						
 						responseVO.setStatus("SUCCESS");
 						responseVO.setCode("200");
-						responseVO.setUsername(userVO.getUsername());
-						responseVO.setMobileNumber(userVO.getMobileNumber());
+						responseVO.setLoginResponseVO(loginResponseVO);
 						
 						logger.info("Login request completed. Result : SUCCESS");
 					}
