@@ -17,7 +17,7 @@ public class ErrorController extends BaseController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ErrorController.class);
 	
-	@RequestMapping(value = "/errors", method = RequestMethod.GET)
+	@RequestMapping(value = "/errors", method = {RequestMethod.GET, RequestMethod.POST})
     public ErrorResponseVO renderErrorPage(HttpServletRequest httpRequest) {
 		
         //ModelAndView errorPage = new ModelAndView("errorPage");

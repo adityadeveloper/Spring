@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class LoginResponseVO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-
+	
 	@JsonProperty(value = "userName")
 	private String username;
 	

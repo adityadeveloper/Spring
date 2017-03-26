@@ -17,31 +17,7 @@
 	<mvc:annotation-driven />
 	
 	<context:component-scan base-package="com.rcpfc" />
-		
-	<bean id="viewResolver"
-    	      class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
-              <property name="prefix">
-                 	 <value>/jsp/</value>
-               </property>
-              <property name="suffix">
-                 	 <value>.jsp</value>
-              </property>
-     </bean>
-	
-	
-<!-- 	<bean id="jsonmapping" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
-		<property name="messageConverters">
-			<list>
-				<ref bean="jsonMessageConverter"/>
-			</list>
-		</property>
-	</bean>
-	
-	
-	<bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-	</bean> -->
-	
-	
+			
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="org.postgresql.Driver" />
@@ -70,50 +46,67 @@
 	<bean id="BaseDAOHibernate" class="com.rcpfc.base.BaseDAOHibernate">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-<!-- 	<bean id="personService" class="com.journaldev.spring.service.PersonServiceImpl">
-		<property name="personDAO" ref="personDAO"></property>
-	</bean> -->
-		
+	
 	<tx:annotation-driven transaction-manager="transactionManager" />
 	
 	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<< Request Interceptor Configuration >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
 	
 	<mvc:interceptors>
- 	 <bean class="com.rcpfc.interceptor.RequestPrePostInterceptor"></bean>
+ 	 	<bean class="com.rcpfc.interceptor.RequestPrePostInterceptor"></bean>
 	</mvc:interceptors> 
 
 
-	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-		<property name="order" value="1"/>
-		<property name="contentNegotiationManager" ref="contentNegotiatingManager"/>
-
-		<property name="defaultViews">
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<< View Resolver Configuration >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+     
+     <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="contentNegotiationManager" ref="contentNegotiationManager"/>
+        <property name="order" value="1"/>
+        <property name="defaultViews">
 			<list>
-				<ref bean="jacksonJsonView"/>
+				<bean id="jacksonJsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
+					<property name="extractValueFromSingleKeyModel" value="true"/>
+				</bean>
+				<bean class="org.springframework.web.servlet.view.xml.MarshallingView">
+					<constructor-arg>
+					<bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+				   	<property name="packagesToScan">
+					<list>
+					   <value>com.rcpfc</value>
+					</list>
+				   </property>
+				</bean>
+			</constructor-arg>
+		  </bean>
 			</list>
 		</property>
-	</bean>
-
-	<bean id="contentNegotiatingManager" class="org.springframework.web.accept.ContentNegotiationManager">
-		<constructor-arg>
-			<bean class="org.springframework.web.accept.PathExtensionContentNegotiationStrategy">
-				<constructor-arg>
-					<map>
-						<entry key="html" value="text/html"/>
-						<entry key="json" value="application/json"/>
-					</map>
-				</constructor-arg>
-			</bean>
-		</constructor-arg>
-	</bean>
-
-	<bean id="jacksonJsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
-		<property name="extractValueFromSingleKeyModel" value="true"/>
-	</bean>
-	
+     </bean>
+     
+	 <bean id="contentNegotiationManager"
+	  		class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+		<property name="mediaTypes">
+			<map>
+			   <entry key="json" value="application/json" />
+			   <entry key="xml" value="application/xml" />
+			</map>
+	    </property>
+		<property name="ignoreAcceptHeader" value="true" />
+		<property name="favorPathExtension" value="true" />
+    	<property name="favorParameter" value="true"/>
+    	<property name="parameterName" value="mediaType"/>
+	 </bean>
+	 
+	 
+	 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
+    	<property name="order" value="2"/>
+        <property name="prefix">
+              <value>/jsp/</value>
+        </property>
+        <property name="suffix">
+              <value>.jsp</value>
+        </property>
+     </bean>
 </beans>
-
- 
- 
