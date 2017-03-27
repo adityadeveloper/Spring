@@ -1,4 +1,4 @@
-<div style="margin:10px;">
-<h3>RCPFC Home Page</h3>
-<p>By:- Aditya</p>
+<div id="content" style="text-align:center">
+        <h2 class="tagline">This is our main content area</h2>
+        <a href="#" class="bg-primary">Show All Products</a>
 </div>

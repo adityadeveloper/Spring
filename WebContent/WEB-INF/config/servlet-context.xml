@@ -59,7 +59,7 @@
  	 	<bean class="com.rcpfc.interceptor.RequestPrePostInterceptor"></bean>
 	</mvc:interceptors> 
 
-
+	<mvc:resources mapping="/images/**" location="/images/" />
 <!-- <<<<<<<<<<<<<<<<<<<<<<<<< View Resolver Configuration >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
      
      <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
@@ -74,20 +74,20 @@
 		</property>
 		
         <property name="defaultViews">
-			<list>
-				<bean id="jacksonJsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
-					<property name="extractValueFromSingleKeyModel" value="true"/>
-				</bean>
-				<bean class="org.springframework.web.servlet.view.xml.MarshallingView">
-					<constructor-arg>
-					<bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-					   	<property name="packagesToScan">
-							<list>
-							   <value>com.rcpfc</value>
-							</list>
-					   </property>
-					</bean>
-					</constructor-arg>
+		  <list>
+			<bean id="jacksonJsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
+				<property name="extractValueFromSingleKeyModel" value="true"/>
+			</bean>
+			<bean class="org.springframework.web.servlet.view.xml.MarshallingView">
+				<constructor-arg>
+				 <bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+				   <property name="packagesToScan">
+					 <list>
+					   <value>com.rcpfc</value>
+					 </list>
+				   </property>
+			      </bean>
+				 </constructor-arg>
 		 		 </bean>
 			</list>
 		</property>
